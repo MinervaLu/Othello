@@ -11,6 +11,7 @@ public Board(){
 	state[3][3]=1;//white
 	state[3][4]=0;//black
 	state[4][3]=1;//white
-	state[4][4]=0;
+	state[4][4]=0;//black
 }
+
 }
