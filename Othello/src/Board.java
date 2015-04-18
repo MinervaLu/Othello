@@ -255,35 +255,60 @@ public void update(Disk d){
 	Disk right=new Disk(-1,-1,0);
 	Disk up=new Disk(-1,-1,0);
 	Disk down=new Disk(-1,-1,0);
+	Disk upperleft=new Disk(-1,-1,0);
+	Disk lowerright=new Disk(-1,-1,0);
 	int maxleft=-1;
 	int minright=8;
 	int mindown=8;
 	int maxup=-1;
+	int maxupperleft=-1;
+	int minlowerright=8;
 	if(color==1){
 		for(int i=0;i<white.size();i++){
+			//update horizontally
+			//to the left of the disk
 			if(white.get(i).row==row&&white.get(i).col<col){
 				if(white.get(i).col>maxleft){
 			    maxleft=white.get(i).col;
 				left=white.get(i);
 				}
 			}
+			//to the right of the disk
 			else if(white.get(i).row==row&&white.get(i).col>col){
 				if(white.get(i).col<minright){
 					minright=white.get(i).col;
 					right=white.get(i);
 				}
 			}
+			//update vertically
+			//to the up of the disk
 			else if(white.get(i).col==col&&white.get(i).row<row){
 				if(white.get(i).row>maxup){
 					maxup=white.get(i).row;
 					up=white.get(i);
 				}
 			}
-				
+			//to the down of the disk	
 			else if(white.get(i).col==col&&white.get(i).row>row){
 				if(white.get(i).row<mindown){
 					mindown=white.get(i).row;
 					down=white.get(i);
+				}
+			}
+			//update diagonatically
+			
+			//to the upperleft of the disk
+			else if(white.get(i).col-col==white.get(i).row-row&&white.get(i).col-col<0){
+				if(white.get(i).col>maxupperleft){
+					maxupperleft=white.get(i).col;
+					upperleft=white.get(i);
+				}
+			}
+			
+			else if(white.get(i).col-col==white.get(i).row-row&&white.get(i).col-col>0){
+				if(white.get(i).col<minlowerright){
+					minlowerright=white.get(i).col;
+					lowerright=white.get(i);
 				}
 			}
 		}
@@ -316,15 +341,42 @@ public void update(Disk d){
 					down=black.get(i);
 				}
 			}
+			
+			else if(black.get(i).col-col==black.get(i).row-row&&black.get(i).col-col<0){
+				if(white.get(i).col>maxupperleft){
+					maxupperleft=black.get(i).col;
+					upperleft=black.get(i);
+				}
+			}
+			
+			else if(black.get(i).col-col==black.get(i).row-row&&black.get(i).col-col>0){
+				if(black.get(i).col<minlowerright){
+					minlowerright=black.get(i).col;
+					lowerright=black.get(i);
+				}
+			}
 		}
 	}
 	
 	/*
-	 int maxleft=-1;
+	int maxleft=-1;
 	int minright=8;
 	int mindown=8;
 	int maxup=-1;
+	int maxupperleft=-1;
+	int minlowerright=8;
 	 */
+	
+	if(maxupperleft!=-1&&checkAllSameDiagonal(upperleft.row,upperleft.col,row,col)){
+		System.out.printf("(%d,%d),(%d,%d)",upperleft.row,upperleft.col,row,col);
+		updateDiagonal(upperleft.row,upperleft.col,row,col);
+	}
+	
+	if(minlowerright!=8&&checkAllSameDiagonal(row,col,lowerright.row,lowerright.col)){
+		System.out.printf("(%d,%d),(%d,%d)",row,col,lowerright.row,lowerright.col);
+		updateDiagonal(row,col,lowerright.row,lowerright.col);
+	}
+
 	if(maxleft!=-1&&checkAllSameHorizon(maxleft,col,row)){
 	    updateHorizon(maxleft,col,row);	
 	}
@@ -365,6 +417,15 @@ public boolean checkAllSameVertical(int i,int j,int col){
 	return true;
 }
 
+public boolean checkAllSameDiagonal(int i,int j,int row,int col){
+	int n=state[i+1][j+1];
+	for(int k=1;k<row-i;k++){
+		if (state[i+k][j+k]!=n)
+			return false;
+	}
+	return true;
+}
+
 public void updateHorizon(int i,int j,int row){
 	for(int k=i+1;k<j;k++)
 		state[row][k]=-state[row][k];
@@ -380,12 +441,10 @@ public void updateDiagonal(int i,int j,int row, int col){
 		state[i+k][j+k]=-state[i+k][j+k];
 	}
 }
-//////////
-//unfinished
-//////////
-public boolean checkAllSameDiagonal(int i,int j,int row,int col){
-	return false;
-}
+
+
+
+
 public static ArrayList<Disk> combine(ArrayList<Disk> d1, ArrayList<Disk> d2){
 	if(d2.isEmpty()){
 		return d1;
