@@ -173,7 +173,7 @@ public ArrayList<Disk> findVertical(Disk d){
 				number++;
 			}
 			if (number<=state.length-1){
-				disk.add(new Disk(number,row,color));
+				disk.add(new Disk(number,col,color));
 			}	
 		}
 	}
@@ -368,12 +368,12 @@ public void update(Disk d){
 	 */
 	
 	if(maxupperleft!=-1&&checkAllSameDiagonal(upperleft.row,upperleft.col,row,col)){
-		System.out.printf("(%d,%d),(%d,%d)",upperleft.row,upperleft.col,row,col);
+		//System.out.printf("(%d,%d),(%d,%d)",upperleft.row,upperleft.col,row,col);
 		updateDiagonal(upperleft.row,upperleft.col,row,col);
 	}
 	
 	if(minlowerright!=8&&checkAllSameDiagonal(row,col,lowerright.row,lowerright.col)){
-		System.out.printf("(%d,%d),(%d,%d)",row,col,lowerright.row,lowerright.col);
+		//System.out.printf("(%d,%d),(%d,%d)",row,col,lowerright.row,lowerright.col);
 		updateDiagonal(row,col,lowerright.row,lowerright.col);
 	}
 
@@ -429,16 +429,46 @@ public boolean checkAllSameDiagonal(int i,int j,int row,int col){
 public void updateHorizon(int i,int j,int row){
 	for(int k=i+1;k<j;k++)
 		state[row][k]=-state[row][k];
+	white.clear();
+	black.clear();
+	for(int m=0; m<8;m++){
+		for (int n=0;n<8;n++){
+			if (state[m][n]==1)
+				white.add(new Disk(m,n,1));
+			else if (state[m][n]==-1)
+				black.add(new Disk(m,n,-1));
+		}
+	}
 }
 
 public void updateVertical(int i,int j,int col){
 	for(int k=i+1;k<j;k++)
 		state[k][col]=-state[k][col];
+	white.clear();
+	black.clear();
+	for(int m=0; m<8;m++){
+		for (int n=0;n<8;n++){
+			if (state[m][n]==1)
+				white.add(new Disk(m,n,1));
+			else if (state[m][n]==-1)
+				black.add(new Disk(m,n,-1));
+		}
+	}
 }
 
 public void updateDiagonal(int i,int j,int row, int col){
 	for (int k=1;k<row-i;k++){
 		state[i+k][j+k]=-state[i+k][j+k];
+	}
+	white.clear();
+	black.clear();
+	for(int m=0; m<8;m++){
+		for (int n=0;n<8;n++){
+			if (state[m][n]==1)
+				white.add(new Disk(m,n,1));
+			else if (state[m][n]==-1)
+				black.add(new Disk(m,n,-1));
+		}
 	}
 }
 
