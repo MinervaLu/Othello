@@ -1336,14 +1336,23 @@ public class GameFrame2 extends javax.swing.JFrame {
 
     private void blackRBMouseClicked(java.awt.event.MouseEvent evt) {                                     
         // TODO add your handling code here:
+        
+        whiteRB.setEnabled(false);
     }                                    
 
     private void whiteRBMouseClicked(java.awt.event.MouseEvent evt) {                                     
         // TODO add your handling code here:
+        blackRB.setEnabled(false);
+
     }                                    
 
     private void restartButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
         // TODO add your handling code here:
+        whiteRB.setSelected(false);
+        blackRB.setSelected(false);
+        whiteRB.setEnabled(true);
+        blackRB.setEnabled(true);
+
     }                                          
         
     /**
