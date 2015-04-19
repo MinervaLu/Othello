@@ -493,7 +493,7 @@ public boolean checkAllSameVertical(int i,int j,int col){
 }
 
 public boolean checkAllSameDiagonal(int i,int j,int row,int col){
-	if(i-row==j-row){
+	if(i-row==j-col){
 	int n=state[i+1][j+1];
 	for(int k=1;k<row-i;k++){
 		if (state[i+k][j+k]!=n)
