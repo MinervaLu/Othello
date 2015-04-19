@@ -26,6 +26,8 @@ public class GameFrame2 extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         b74 = new javax.swing.JButton();
         b04 = new javax.swing.JButton();
@@ -107,6 +109,16 @@ public class GameFrame2 extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        restartButton = new javax.swing.JButton();
+        blackRB = new javax.swing.JRadioButton();
+        whiteRB = new javax.swing.JRadioButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        blackScore = new javax.swing.JLabel();
+        whiteScore = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        timeRemain = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
 
         jButton1.setForeground(new java.awt.Color(255, 0, 0));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -619,6 +631,13 @@ public class GameFrame2 extends javax.swing.JFrame {
 
         jLabel16.setText("7");
 
+        restartButton.setText("Restart");
+        restartButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                restartButtonMouseClicked(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -743,11 +762,17 @@ public class GameFrame2 extends javax.swing.JFrame {
                         .add(46, 46, 46)
                         .add(jLabel8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .add(47, 47, 47))
+            .add(jPanel1Layout.createSequentialGroup()
+                .add(270, 270, 270)
+                .add(restartButton)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
-                .add(12, 12, 12)
+                .addContainerGap()
+                .add(restartButton)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(jLabel1)
@@ -891,9 +916,7 @@ public class GameFrame2 extends javax.swing.JFrame {
                                 .add(jLabel10)
                                 .add(24, 24, 24)))
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(b20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(b20, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(22, 22, 22)
                                 .add(jLabel11)))
@@ -932,18 +955,93 @@ public class GameFrame2 extends javax.swing.JFrame {
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
+        blackRB.setText("Black");
+        blackRB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blackRBMouseClicked(evt);
+            }
+        });
+        blackRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blackRBActionPerformed(evt);
+            }
+        });
+
+        whiteRB.setText("White");
+        whiteRB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                whiteRBMouseClicked(evt);
+            }
+        });
+        whiteRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                whiteRBActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Black Score:");
+
+        jLabel18.setText("White Score: ");
+
+        blackScore.setText("2");
+
+        whiteScore.setText("2");
+
+        jLabel19.setText("Time Remaining:");
+
+        timeRemain.setText("0:00");
+
+        jLabel20.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel20.setText("OTHELLO");
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 12, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .add(38, 38, 38)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(layout.createSequentialGroup()
+                        .add(jLabel17)
+                        .add(18, 18, 18)
+                        .add(blackScore)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jLabel20))
+                    .add(layout.createSequentialGroup()
+                        .add(jLabel18)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(whiteScore)
+                        .add(82, 82, 82)
+                        .add(jLabel19)
+                        .add(18, 18, 18)
+                        .add(timeRemain)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(blackRB)
+                    .add(whiteRB))
+                .add(62, 62, 62))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(blackRB)
+                    .add(jLabel17)
+                    .add(blackScore)
+                    .add(jLabel20))
+                .add(4, 4, 4)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(whiteRB)
+                    .add(jLabel18)
+                    .add(whiteScore)
+                    .add(jLabel19)
+                    .add(timeRemain))
+                .add(19, 19, 19)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1015,6 +1113,9 @@ public class GameFrame2 extends javax.swing.JFrame {
 
     private void b12MouseClicked(java.awt.event.MouseEvent evt) {                                 
         // TODO add your handling code here:
+        System.out.println(b12.getBounds());
+        
+        
     }                                
 
     private void b13MouseClicked(java.awt.event.MouseEvent evt) {                                 
@@ -1224,6 +1325,26 @@ public class GameFrame2 extends javax.swing.JFrame {
     private void b76MouseClicked(java.awt.event.MouseEvent evt) {                                 
         // TODO add your handling code here:
     }                                
+
+    private void blackRBActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+    }                                       
+
+    private void whiteRBActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+    }                                       
+
+    private void blackRBMouseClicked(java.awt.event.MouseEvent evt) {                                     
+        // TODO add your handling code here:
+    }                                    
+
+    private void whiteRBMouseClicked(java.awt.event.MouseEvent evt) {                                     
+        // TODO add your handling code here:
+    }                                    
+
+    private void restartButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
+        // TODO add your handling code here:
+    }                                          
         
     /**
      * @param args the command line arguments
@@ -1324,6 +1445,10 @@ public class GameFrame2 extends javax.swing.JFrame {
     private javax.swing.JButton b75;
     private javax.swing.JButton b76;
     private javax.swing.JButton b77;
+    private javax.swing.JRadioButton blackRB;
+    private javax.swing.JLabel blackScore;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1333,7 +1458,11 @@ public class GameFrame2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1342,5 +1471,9 @@ public class GameFrame2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton restartButton;
+    private javax.swing.JLabel timeRemain;
+    private javax.swing.JRadioButton whiteRB;
+    private javax.swing.JLabel whiteScore;
     // End of variables declaration                   
 }
