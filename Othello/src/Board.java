@@ -7,6 +7,7 @@ ArrayList<Disk> white;
 ArrayList<Disk> black;
 public Board(){
 	//initialize the board
+	
 	state=new int[8][8];
 	white=new ArrayList<Disk>();
 	black=new ArrayList<Disk>();
@@ -187,8 +188,8 @@ public ArrayList<Disk> findDiagonal(Disk d){
 	int col=d.col;
 	int color=d.color;
 	ArrayList<Disk> disk=new ArrayList<Disk>();
-	if (row==0&&col==0){
-		if(state[1][1]==-color){
+	if (row==0&&col!=7){
+		if(state[1][col+1]==-color){
 			int number=1;
 			while(number<state.length&&state[number][number]==-color){
 				number++;
@@ -199,7 +200,7 @@ public ArrayList<Disk> findDiagonal(Disk d){
 		}
 	}
 	//in the last row
-	else if (row==state.length-1&&col==state.length-1){
+	else if (row==state.length-1&&col!=0){
 		if(state[row-1][col-1]==-color){
 			int number=row-1;
 			while(number>0&&state[number][number]==-color){
@@ -211,7 +212,7 @@ public ArrayList<Disk> findDiagonal(Disk d){
 	}
 	
 	else{
-		if(state[row-1][col-1]==-color){
+		if(row-1>=0&&col-1>=0&&state[row-1][col-1]==-color){
 			int rownumber=row-1;
 			int colnumber=col-1;
 			while(rownumber>0&&colnumber>0&&state[rownumber][colnumber]==-color){
@@ -224,7 +225,7 @@ public ArrayList<Disk> findDiagonal(Disk d){
 		}
 		
 		
-		if(state[row+1][col+1]==-color){
+		if(row+1<=7&&col+1<=7&&state[row+1][col+1]==-color){
 			int rownumber=row+1;
 			int colnumber=col+1;
 			while(rownumber<state.length&&colnumber<state.length&&state[rownumber][colnumber]==-color){
@@ -235,6 +236,32 @@ public ArrayList<Disk> findDiagonal(Disk d){
 				disk.add(new Disk(rownumber,colnumber,color));
 			}	
 		}
+		
+		if(row-1>=0&&col+1<=7&&state[row-1][col+1]==-color){
+			int rownumber=row-1;
+			int colnumber=col+1;
+			while(rownumber>0&&colnumber>0&&state[rownumber][colnumber]==-color){
+				rownumber--;
+				colnumber++;
+			}
+			if(rownumber>=0&&colnumber<8)
+				disk.add(new Disk(rownumber,colnumber,color));
+			
+		}
+		
+		
+		if(row+1<=7&&col-1>=0&&state[row+1][col-1]==-color){
+			int rownumber=row+1;
+			int colnumber=col-1;
+			while(rownumber<state.length&&colnumber<state.length&&state[rownumber][colnumber]==-color){
+				rownumber++;
+				colnumber--;
+			}
+			if (rownumber<state.length&&colnumber>=0){
+				disk.add(new Disk(rownumber,colnumber,color));
+			}	
+		}
+		
 	}
 	
 	
@@ -251,18 +278,23 @@ public void update(Disk d){
 	int row=d.row;
 	int col=d.col;
 	int color=d.color;
+
 	Disk left=new Disk(-1,-1,0);
 	Disk right=new Disk(-1,-1,0);
 	Disk up=new Disk(-1,-1,0);
 	Disk down=new Disk(-1,-1,0);
 	Disk upperleft=new Disk(-1,-1,0);
 	Disk lowerright=new Disk(-1,-1,0);
+	Disk upperright=new Disk(-1,-1,0);
+	Disk lowerleft=new Disk(-1,-1,0);
 	int maxleft=-1;
 	int minright=8;
 	int mindown=8;
 	int maxup=-1;
 	int maxupperleft=-1;
 	int minlowerright=8;
+	int minupperright=8;
+	int maxlowerleft=-1;
 	if(color==1){
 		for(int i=0;i<white.size();i++){
 			//update horizontally
@@ -297,14 +329,28 @@ public void update(Disk d){
 			}
 			//update diagonatically
 			
-			//to the upperleft of the disk
+			//to the upper left of the disk
 			else if(white.get(i).col-col==white.get(i).row-row&&white.get(i).col-col<0){
 				if(white.get(i).col>maxupperleft){
 					maxupperleft=white.get(i).col;
 					upperleft=white.get(i);
 				}
 			}
-			
+			//to the upper right
+			else if(white.get(i).col-col==-(white.get(i).row-row)&&white.get(i).col-col>0){
+				if(white.get(i).col<minupperright){
+					minupperright=white.get(i).col;
+					upperright=white.get(i);
+				}
+			}
+			//to the lower left
+			else if(white.get(i).col-col==-(white.get(i).row-row)&&white.get(i).col-col<0){
+				if(white.get(i).col>maxlowerleft){
+					maxlowerleft=white.get(i).col;
+					lowerleft=white.get(i);
+				}
+			}
+			//to the lower right
 			else if(white.get(i).col-col==white.get(i).row-row&&white.get(i).col-col>0){
 				if(white.get(i).col<minlowerright){
 					minlowerright=white.get(i).col;
@@ -342,13 +388,28 @@ public void update(Disk d){
 				}
 			}
 			
+			//to the upper left of the disk
 			else if(black.get(i).col-col==black.get(i).row-row&&black.get(i).col-col<0){
-				if(white.get(i).col>maxupperleft){
+				if(black.get(i).col>maxupperleft){
 					maxupperleft=black.get(i).col;
 					upperleft=black.get(i);
 				}
 			}
-			
+			//to the upper right
+			else if(black.get(i).col-col==-(black.get(i).row-row)&&black.get(i).col-col>0){
+				if(black.get(i).col<minupperright){
+					minupperright=black.get(i).col;
+					upperright=black.get(i);
+				}
+			}
+			//to the lower left
+			else if(black.get(i).col-col==-(black.get(i).row-row)&&black.get(i).col-col<0){
+				if(black.get(i).col>maxlowerleft){
+					maxlowerleft=black.get(i).col;
+					lowerleft=black.get(i);
+				}
+			}
+			//to the lower right
 			else if(black.get(i).col-col==black.get(i).row-row&&black.get(i).col-col>0){
 				if(black.get(i).col<minlowerright){
 					minlowerright=black.get(i).col;
@@ -365,15 +426,29 @@ public void update(Disk d){
 	int maxup=-1;
 	int maxupperleft=-1;
 	int minlowerright=8;
+	int minupperright=8;
+	int maxlowerleft=-1;
 	 */
+	if(minupperright!=8&&checkAllSameDiagonal(row,col,upperright.row,upperright.col)){
+		System.out.println("Upperright");
+		updateDiagonal(row,col,upperright.row,upperright.col);
+	}
+	
+	if(maxlowerleft!=-1&&checkAllSameDiagonal(lowerleft.row,lowerleft.col,row,col)){
+		System.out.println("Lowerleft");
+		updateDiagonal(lowerleft.row,lowerleft.col,row,col);
+	}
+	
 	
 	if(maxupperleft!=-1&&checkAllSameDiagonal(upperleft.row,upperleft.col,row,col)){
 		//System.out.printf("(%d,%d),(%d,%d)",upperleft.row,upperleft.col,row,col);
+		System.out.println("Upperleft");
 		updateDiagonal(upperleft.row,upperleft.col,row,col);
 	}
 	
 	if(minlowerright!=8&&checkAllSameDiagonal(row,col,lowerright.row,lowerright.col)){
 		//System.out.printf("(%d,%d),(%d,%d)",row,col,lowerright.row,lowerright.col);
+		System.out.println("lowerright");
 		updateDiagonal(row,col,lowerright.row,lowerright.col);
 	}
 
@@ -418,12 +493,22 @@ public boolean checkAllSameVertical(int i,int j,int col){
 }
 
 public boolean checkAllSameDiagonal(int i,int j,int row,int col){
+	if(i-row==j-row){
 	int n=state[i+1][j+1];
 	for(int k=1;k<row-i;k++){
 		if (state[i+k][j+k]!=n)
 			return false;
 	}
 	return true;
+	}
+	else{
+		int n=state[i-1][j+1];
+		for(int k=1;k<row-i;k++){
+			if (state[i-k][j+k]!=n)
+				return false;
+		}
+		return true;	
+	}
 }
 
 public void updateHorizon(int i,int j,int row){
@@ -457,6 +542,8 @@ public void updateVertical(int i,int j,int col){
 }
 
 public void updateDiagonal(int i,int j,int row, int col){
+	if(i-row==j-col){
+	System.out.println("Check1");
 	for (int k=1;k<row-i;k++){
 		state[i+k][j+k]=-state[i+k][j+k];
 	}
@@ -469,6 +556,25 @@ public void updateDiagonal(int i,int j,int row, int col){
 			else if (state[m][n]==-1)
 				black.add(new Disk(m,n,-1));
 		}
+	}
+	}
+	else{
+		System.out.println("Check");
+		//
+		//state[i-1][j+1]=-state[i-1][j+1];
+		for (int k=1;k<Math.abs(row-i);k++){
+			state[i-k][j+k]=-state[i-k][j+k];
+		}
+		white.clear();
+		black.clear();
+		for(int m=0; m<8;m++){
+			for (int n=0;n<8;n++){
+				if (state[m][n]==1)
+					white.add(new Disk(m,n,1));
+				else if (state[m][n]==-1)
+					black.add(new Disk(m,n,-1));
+			}
+		}	
 	}
 }
 
