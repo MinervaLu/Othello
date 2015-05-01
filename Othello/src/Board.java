@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.ArrayList;
 
 //testing whether can contribute or not
 public class Board {
@@ -585,7 +585,7 @@ public void updateDiagonal(int i,int j,int row, int col){
 	//System.out.printf("(%d,%d)\n",row,col);
 	for (int k=1;k<row-i;k++){
 		state[i+k][j+k]=-state[i+k][j+k];
-		System.out.println("updated");
+		//System.out.println("updated");
 	}
 	white.clear();
 	black.clear();
