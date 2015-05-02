@@ -25,10 +25,10 @@ public static void main(String[] args) throws InterruptedException{
 	int count=0;
 
 	if(time1!=0){
-		time1=Math.min(time1/2,time1-2500);	
+		time1=Math.min(time1/2,Math.abs(time1-2500));	
 	}
 	if(time2!=0){
-		time2=Math.min(time2,time2-2500);
+		time2=Math.min(time2,Math.abs(time2-2500));
 	}
 	
 //don't have time limit for the entire game	
@@ -80,6 +80,7 @@ if(time2==0){
 						 else{
 							 gameover=true;
 							 illegal=true;
+							 break;
 						 }
 						 } 
 					 
@@ -115,6 +116,10 @@ if(time2==0){
 						newGame.add(usermove);
 						newGame.update(usermove);
 					}	
+					else{
+						illegal=true;
+						break;
+					}
 					//no valid move for the white
 					if(newGame.validMove(1).isEmpty()==true){
 						if(novalidblack){
@@ -529,7 +534,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 //depth!=0;time1=0;time2==0
 	if (specifiedLimit!=0&&timeLimit1==0&&timeLimit2==0){
 		
-		if(board.validMove(-player).isEmpty()||depth>specifiedLimit)
+		if(board.validMove(-player).isEmpty()||depth>=Math.min(6,specifiedLimit))
 			return(new Value(heuristic(board,player),null));
 	 
 		if (player==-1){
@@ -538,7 +543,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 			
 				if (value.number>alpha){
@@ -558,7 +563,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 				if (value.number<beta){
@@ -577,6 +582,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 //depth!=0;timeLimit1!=0;timeLimit2=0	
 	else if(timeLimit1!=0&&timeLimit2==0){
 		
+		//if(depth>=6||currenttime-starttime>timeLimit1||board.validMove(-player).isEmpty())
 		if(currenttime-starttime>timeLimit1||board.validMove(-player).isEmpty())
 			return(new Value(heuristic(board,player),null));
 	 
@@ -586,7 +592,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 			
 				if (value.number>alpha){
@@ -606,7 +612,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 				if (value.number<beta){
@@ -620,53 +626,10 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 			return new Value(beta,best);
 		}
 	}
-//depth==0;timeLimit1!=0;timeLimit2==0	
-	else if(specifiedLimit==0&&timeLimit1!=0&&timeLimit2==0){
-		if(currenttime-starttime>timeLimit1||board.validMove(-player).isEmpty())
-			return(new Value(heuristic(board,player),null));
-	 
-		if (player==-1){
-			valid=board.validMove(player);
-			for(Disk action:valid){
-				Board bcopy=makeCopy(board);
-				bcopy.add(action);
-				bcopy.update(action);
-				Board child=bcopy;
-				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
-			
-				if (value.number>alpha){
-					alpha=value.number;
-					best=action;
-			}
-				if (beta<=alpha){
-					break;
-			}
-			}
-			return new Value(alpha,best);
-		}
-		//white player
-		else {
-			valid=board.validMove(player);
-			for(Disk action:valid){
-				Board bcopy=makeCopy(board);
-				bcopy.add(action);
-				bcopy.update(action);
-				Board child=bcopy;
-				
-				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
-				if (value.number<beta){
-					beta=value.number;
-					best=action;
-				}
-				if (beta<=alpha){
-					break;
-				}
-			}
-			return new Value(beta,best);
-		}
-	}
+	
 //depth==0;timeLimit1==0;timeLimit2!=0	
 	else if(timeLimit2!=0){
+		//if(depth>=6||currenttime-starttime>timeLimit2/5||board.validMove(-player).isEmpty())
 		if(currenttime-starttime>timeLimit2/5||board.validMove(-player).isEmpty())
 			return(new Value(heuristic(board,player),null));
 	 
@@ -676,7 +639,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 			
 				if (value.number>alpha){
@@ -696,7 +659,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 				if (value.number<beta){
@@ -722,7 +685,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 			
 				if (value.number>alpha){
@@ -742,7 +705,7 @@ public static Value AlphaBeta(Board board, int depth,double alpha,double beta,in
 				Board bcopy=makeCopy(board);
 				bcopy.add(action);
 				bcopy.update(action);
-				Board child=bcopy;
+				Board child=makeCopy(bcopy);
 				
 				value=AlphaBeta(child,depth+1,alpha,beta,-player,specifiedLimit,timeLimit1,timeLimit2,starttime);
 				if (value.number<beta){
@@ -768,14 +731,16 @@ public static Board makeCopy(Board b){
 	   copy.black.clear();
 	   for(int i=0;i<8;i++){
 		   for (int j=0;j<8;j++){
+		   	   copy.state[i][j]=b.state[i][j];
 			   s[i][j]=b.state[i][j];
 			   if (s[i][j]==1)
 				   copy.white.add(new Disk(i,j,1));
 			   if(s[i][j]==-1)
 				   copy.black.add(new Disk(i,j,-1));
+				   
 		   }
 	   }
-	   copy.state=s;
+	   
 	   return copy;
 }
 
