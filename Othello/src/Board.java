@@ -85,47 +85,46 @@ public ArrayList<Disk> findHorizon(Disk d){
 	if (col==0){
 		if(state[row][1]==-color){
 			int number=1;
-			while(number<state[row].length&&state[row][number]==-color){
+			while(number<7&&state[row][number]==-color){
 				number++;
 			}
-			if (number<=state[row].length-1&&state[row][number]==0){
+			if (number<=7&&state[row][number]==0){
 				disk.add(new Disk(row,number,color));
 			}
 		}
 	}
 	//in the last column
-	else if (col==state[row].length-1){
-		if(state[row][col-1]==-color){
-			int number=col-1;
-			while(number>0&&state[row][number]==-color){
-				number--;
+	else if (col==7){
+		if(state[row][6]==-color){
+			int number=1;
+			while(col-number>0&&state[row][col-number]==-color){
+				number++;
 			}
-			if(number>=0&&state[row][number]==0)
-				disk.add(new Disk(row,number,color));
-			else 
-				;
+			if(col-number>=0&&state[row][col-number]==0)
+				disk.add(new Disk(row,col-number,color));
 		}
 	}
+
 	
 	else{
 		if(state[row][col-1]==-color){
-			int number=col-1;
-			while(number>0&&state[row][number]==-color){
-				number--;
+			int number=1;
+			while(col-number>0&&state[row][col-number]==-color){
+				number++;
 			}
-			if(number>=0&&state[row][number]==0)
-				disk.add(new Disk(row,number,color));
+			if(col-number>=0&&state[row][col-number]==0)
+				disk.add(new Disk(row,col-number,color));
 			
 		}
 		
 		
 		if(state[row][col+1]==-color){
-			int number=col+1;
-			while(number<state[row].length&&state[row][number]==-color){
+			int number=1;
+			while(col+number<7&&state[row][col+number]==-color){
 				number++;
 			}
-			if (number<=state[row].length-1&&state[row][number]==0){
-				disk.add(new Disk(row,number,color));
+			if (number<=7&&state[row][col+number]==0){
+				disk.add(new Disk(row,col+number,color));
 			}	
 		}
 	}
@@ -154,14 +153,14 @@ public ArrayList<Disk> findVertical(Disk d){
 		}
 	}
 	//in the last row
-	else if (row==state.length-1){
+	else if (row==7){
 		if(state[row-1][col]==-color){
-			int number=row-1;
-			while(number>0&&state[number][col]==-color){
-				number--;
+			int number=1;
+			while(row-number>0&&state[row-number][col]==-color){
+				number++;
 			}
-			if(number>=0&&state[number][col]==0)
-				disk.add(new Disk(number,col,color));
+			if(row-number>=0&&state[row-number][col]==0)
+				disk.add(new Disk(row-number,col,color));
 		}
 	}
 	
@@ -197,89 +196,200 @@ public ArrayList<Disk> findDiagonal(Disk d){
 	int col=d.col;
 	int color=d.color;
 	ArrayList<Disk> disk=new ArrayList<Disk>();
-	if (row==0&&col!=7){
-		if(state[1][col+1]==-color){
+	
+	if(row==0&&col==0){
+		if(state[1][1]==-color){
 			int number=1;
-			while(number<state.length&&state[number][number]==-color){
+			while(row+number<7&&state[number][number]==-color){
 				number++;
 			}
-			if (number<=state.length-1&&state[number][number]==0){
+			if(state[number][number]==0){
 				disk.add(new Disk(number,number,color));
 			}
 		}
 	}
-	//in the last row
-	else if (row==state.length-1&&col!=0){
+	
+	else if(row==7&&col==0){
+		if(state[6][1]==-color){
+			
+			int number=1;
+			while(row-number>0&&state[7-number][number]==-color){
+				number++;
+			}
+			
+			if(state[7-number][number]==0){
+				disk.add(new Disk(7-number,number,color));
+			}
+		}
+	}
+	
+	else if(row==0&&col==7){
+		if(state[1][6]==-color){
+			int number=1;
+			while(col-number>0&&state[number][7-number]==-color){
+				number++;
+			}
+			if(state[number][7-number]==0){
+				disk.add(new Disk(number,7-number,color));
+			}
+		}
+	}
+	//
+	else if(row==7&&col==7){
+		if(state[6][6]==-color){
+			int number=1;
+			while(row-number>0&&state[7-number][7-number]==-color){
+				number++;
+				
+			}
+			if(state[7-number][7-number]==0){
+				disk.add(new Disk(7-number,7-number,color));
+			}
+		}
+	}
+//the first row other than corner
+	else if (row==0){
+		if(state[1][col+1]==-color){
+			int number=1;
+			while(col+number<7&&state[number][col+number]==-color){
+				number++;
+			}
+			if (number<=7&&state[row+number][col+number]==0){
+				disk.add(new Disk(row+number,col+number,color));
+			}
+		}
+		if(state[1][col-1]==-color){
+			int number=1;
+			while(col-number>0&&state[row+number][col-number]==-color){
+				number++;
+			}
+			if(col-number>=0&&state[row+number][col-number]==0){
+				disk.add(new Disk(row+number,col-number,color));
+			}
+			
+		}
+	}
+
+//the last row
+	else if (row==7){
 		if(state[row-1][col-1]==-color){
-			int number=row-1;
-			while(number>0&&state[number][number]==-color){
-				number--;
+			int number=1;
+			while(col-number>0&&state[row-number][col-number]==-color){
+				number++;
 			}
-			if(number>=0&&state[number][number]==0)
-				disk.add(new Disk(number,number,color));
+			if(col-number>=0&&state[row-number][col-number]==0){
+				disk.add(new Disk(row-number,col-number,color));
+			}
+			
+		}
+		if(state[row-1][col+1]==-color){
+			int number=1;
+			while(col+number<7&&state[row-number][col+number]==-color){
+				number++;
+			}
+			if(col+number<=7&&state[row-number][col+number]==0){
+				disk.add(new Disk(row-number,col+number,color));
+			}
 		}
 	}
 	
+	
+//the first column
+	else if(col==0){
+		if(state[row-1][1]==-color){
+			int number=1;
+			while(row-number>0&&state[row-number][number]==-color){
+				number++;
+			}
+			if(row-number>=0&&state[row-number][number]==0){
+				disk.add(new Disk(row-number,number,color));
+			}
+		}
+		
+		if(state[row+1][1]==-color){
+			int number=1;
+			while(row+number<7&&state[row+number][number]==-color){
+				number++;
+			}
+			if(row+number<=7&&state[row+number][number]==0){
+				disk.add(new Disk(row+number,number,color));
+			}
+		}
+	}
+	
+//in the last col
+	else if(col==7){
+		if(state[row-1][6]==-color){
+			int number=1;
+			while(row-number>0&&state[row-number][7-number]==-color){
+				number++;
+			}
+			if(row-number>=0&&state[row-number][7-number]==0){
+				disk.add(new Disk(row-number,7-number,color));
+			}
+		}
+		
+		if(state[row+1][6]==-color){
+			int number=1;
+			while(row+number<7&&state[row+number][7-number]==-color){
+				number++;
+			}
+			if(row+number<=7&&state[row+number][7-number]==0){
+				disk.add(new Disk(row+number,7-number,color));
+			}
+		}
+	}
+	
+	
+	
+//in the middle	
 	else{
-		if(row-1>=0&&col-1>=0&&state[row-1][col-1]==-color){
-			int rownumber=row-1;
-			int colnumber=col-1;
-			while(rownumber>0&&colnumber>0&&state[rownumber][colnumber]==-color){
-				rownumber--;
-				colnumber--;
+		if(state[row-1][col-1]==-color){
+			int number=1;
+			while(row-number>0&&col-number>0&&state[row-number][col-number]==-color){
+				number++;
 			}
-			if(rownumber>=0&&colnumber>0&&state[rownumber][colnumber]==0)
-				disk.add(new Disk(rownumber,colnumber,color));
-			
+			if(row-number>=0&&col-number>=0&&state[row-number][col-number]==0){
+				disk.add(new Disk(row-number,col-number,color));
+			}
 		}
 		
-		
-		if(row+1<=7&&col+1<=7&&state[row+1][col+1]==-color){
-			int rownumber=row+1;
-			int colnumber=col+1;
-			while(rownumber<state.length&&colnumber<state.length&&state[rownumber][colnumber]==-color){
-				rownumber++;
-				colnumber++;
+		if(state[row+1][col+1]==-color){
+			int number=1;
+			while(row+number<7&&col+number<7&&state[row+number][col+number]==-color){
+				number++;
 			}
-			if (rownumber<=state.length-1&&colnumber<=state.length-1&&state[rownumber][colnumber]==0){
-				disk.add(new Disk(rownumber,colnumber,color));
-			}	
+			if(row+number<=7&&col+number<=7&&state[row+number][col+number]==0){
+				disk.add(new Disk(row+number,col+number,color));
+			}
 		}
 		
-		if(row-1>=0&&col+1<=7&&state[row-1][col+1]==-color){
-			int rownumber=row-1;
-			int colnumber=col+1;
-			while(rownumber<8&&colnumber<8&&rownumber>0&&colnumber>0&&state[rownumber][colnumber]==-color){
-				rownumber--;
-				colnumber++;
+		if(state[row-1][col+1]==-color){
+			int number=1;
+			while(row-number>0&&col+number<7&&state[row-number][col+number]==-color){
+				number++;
 			}
-			if(rownumber>=0&&colnumber<8&&state[rownumber][colnumber]==0)
-				disk.add(new Disk(rownumber,colnumber,color));
-			
+			if(row-number>=0&&col-number<=7&&state[row-number][col+number]==0){
+				disk.add(new Disk(row-number,col+number,color));
+			}
 		}
 		
-		
-		if(row+1<=7&&col-1>=0&&state[row+1][col-1]==-color){
-			int rownumber=row+1;
-			int colnumber=col-1;
-			while(rownumber<state.length&&colnumber>0&&state[rownumber][colnumber]==-color){
-				rownumber++;
-				colnumber--;
+		if(state[row+1][col-1]==-color){
+			int number=1;
+			while(row+number<7&&col-number>0&&state[row+number][col-number]==-color){
+				number++;
 			}
-			if (rownumber<state.length&&colnumber>=0&&state[rownumber][colnumber]==0){
-				disk.add(new Disk(rownumber,colnumber,color));
-			}	
+			if(row+number<=7&&col+number>=0&&state[row+number][col-number]==0){
+				disk.add(new Disk(row+number,col-number,color));
+			}
 		}
 		
 	}
 	
-	
+
 	
 	return disk;
 }
-
-
-
 
 
 
